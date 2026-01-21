@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
 	int dbfd = -1;
 	struct dbheader_t  *dbhdr = NULL;
-	struct employee_t  *employees = NULL;
+	//struct employee_t  *employees = NULL;
 
 	while ((c = getopt(argc, argv, "nf:")) != -1) {
 		switch (c) {
@@ -67,12 +67,12 @@ int main(int argc, char *argv[]) {
             if (dbfd == STATUS_ERROR) {
                     printf("Unable to open database file\n");
                     return -1;
-  	  }
+            }
 
-   	  if (validate_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
-            printf("Failed to validate database header\n");
-            return -1;
-          }   
+   	    if (validate_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
+                    printf("Failed to validate database header\n");
+                    return -1;
+            }   
 
         }  
 	
@@ -84,8 +84,8 @@ int main(int argc, char *argv[]) {
 //}
 		
       // debug text (TODO: (stephen) remove later)
-     //  printf("Newfile: %d\n", newfile);
-     //  printf("Filepath: %s\n", filepath);       
+      printf("Newfile: %d\n", newfile);
+      printf("Filepath: %s\n", filepath);       
 
 	output_file(dbfd, dbhdr);	
 
