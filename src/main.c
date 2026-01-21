@@ -77,11 +77,11 @@ int main(int argc, char *argv[]) {
         }  
 	
 	
-       if(read_employees(dbfd, dbhdr, &employees) != STATUS_SUCCESS) {
-		printf("Failed to read employees");
-		return 0;
+//       if(read_employees(dbfd, dbhdr, &employees) != STATUS_SUCCESS) {
+//		printf("Failed to read employees");
+//		return 0;
 	      
-}
+//}
 		
       // debug text (TODO: (stephen) remove later)
      //  printf("Newfile: %d\n", newfile);
