@@ -25,7 +25,7 @@ int  output_file(int fd, struct dbheader_t *dbhdr) {
 
 	write(fd, dbhdr, sizeof(struct dbheader_t));
 
-	return;
+	return 0;
 
 }
 
