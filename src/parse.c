@@ -169,8 +169,7 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
   }
 }
 
-int output_file(int fd, struct dbheader_t *dbhdr,
-                struct employee_t *employees) {
+int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) {
 
   if (fd < 0) {
     printf("Invalid / Missing File Descriptor\n");
