@@ -89,12 +89,11 @@ int main(int argc, char *argv[]) {
 //}
 		
       // debug text (TODO: (stephen) remove later)
-      printf("Newfile: %d\n", newfile);
-      printf("Filepath: %s\n", filepath);       
+      //printf("Newfile: %d\n", newfile);
+      //printf("Filepath: %s\n", filepath);       
 
 	output_file(dbfd, dbhdr);	
 
-	return 0;
-
+	return 0; 
 
 }
