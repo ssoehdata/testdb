@@ -80,6 +80,11 @@ int create_db_header(/*int fd, */struct dbheader_t **headerOut) {
 	//if (header == -1) {
 		//printf("Malloc failed to create db header\n");
 		//return STATUS_ERROR; 
+
+     if (header == (void *) -1) {
+        printf("Malloc failed to create db header\n");
+        return STATUS_ERROR;
+}
 	}
 
 	header->version = 0x1;

@@ -1,6 +1,6 @@
 #include<stdio.h> 
 #include<stdbool.h>
-//#include<getopt.h> 
+#include<getopt.h> 
 #include<unistd.h>
 
 #include"common.h"
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 		printf("Filepath is a required argument\n");
 		print_usage(argv);
         
-       return 0;
+       return -1;
 		
 	}
 
@@ -57,10 +57,14 @@ int main(int argc, char *argv[]) {
                 printf("Unable to create database file\n");
                 return -1;
         }
-	     if(create_db_header(dbfd, &dbhdr) == STATUS_ERROR) { 
+	     if(create_db_header/*(dbfd,*/ &dbhdr) == STATUS_ERROR) { 
 		     printf("Failed to create database header\n");
+		    // close(dbfd)
 		     return -1;
-	     }
+	     } else {
+		printf("Confirming database file header creation\n");
+	      }
+		
 
 
 	} else {
