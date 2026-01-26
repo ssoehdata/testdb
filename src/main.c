@@ -1,7 +1,7 @@
 #include<stdio.h> 
 #include<stdbool.h>
 #include<getopt.h> 
-#include<unistd.h>
+#include<stdlib.h>
 
 #include"common.h"
 #include"file.h"
@@ -16,15 +16,19 @@ void print_usage(char *argv[ ]) {
 
 int main(int argc, char *argv[]) {
 
-    char *filepath = NULL;
-	bool newfile = false;
-	int c;
+     char *filepath = NULL;
+     char *portarg = NULL;
+     unsigned short port = 0;
+     char *addstring = NULL;
+     bool newfile = false;
+     bool list = false;
+     int c;
 
-	int dbfd = -1;
-	struct dbheader_t  *dbhdr = NULL;
-	//struct employee_t  *employees = NULL;
+     int dbfd = -1;
+     struct dbheader_t  *dbhdr = NULL;
+     struct employee_t  *employees = NULL;
 
-	while ((c = getopt(argc, argv, "nf:")) != -1) {
+     while ((c = getopt(argc, argv, "nf:a:l")) != -1) {
 		switch (c) {
 			case 'n':
 				newfile = true;
@@ -32,11 +36,22 @@ int main(int argc, char *argv[]) {
 			case 'f':
 				filepath = optarg;
 				break;
+			
+			case 'a':
+				addstring = optarg;
+				break;
+			case 'l':
+				list = true;
+				break;
 
 			case '?':
 				printf("Unknown option -%c\n", c);
 				break;
-		
+			
+			case 'p':
+				portarg = optarg;
+				break;
+
 			default:
 				return -1;
 		} 		
@@ -47,7 +62,7 @@ int main(int argc, char *argv[]) {
 		printf("Filepath is a required argument\n");
 		print_usage(argv);
         
-       return -1;
+       return 0;
 		
 	}
 
@@ -57,14 +72,10 @@ int main(int argc, char *argv[]) {
                 printf("Unable to create database file\n");
                 return -1;
         }
-	     if(create_db_header/*(dbfd,*/ &dbhdr) == STATUS_ERROR) { 
+	     if(create_db_header(dbfd, &dbhdr) == STATUS_ERROR) { 
 		     printf("Failed to create database header\n");
-		    // close(dbfd)
 		     return -1;
-	     } else {
-		printf("Confirming database file header creation\n");
-	      }
-		
+	     }
 
 
 	} else {
@@ -74,26 +85,33 @@ int main(int argc, char *argv[]) {
                     return -1;
             }
 
-   	    if (validate_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
+   	     if (validate_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
                     printf("Failed to validate database header\n");
                     return -1;
             }   
 
         }  
 	
-	
-//       if(read_employees(dbfd, dbhdr, &employees) != STATUS_SUCCESS) {
-//		printf("Failed to read employees");
-//		return 0;
+       if(read_employees(dbfd, dbhdr, &employees) != STATUS_SUCCESS) {
+		printf("Failed to read employees");
+		return 0;
 	      
-//}
+	}
+
+        if (addstring) {
+		dbhdr->count++;
+		employees = realloc(employees, dbhdr->count*(sizeof(struct employee_t)));
+		add_employee(dbhdr,employees, addstring);
+	}
+
+	 if (list) {
+		list_employees(dbhdr, employees);
+	 }
+
+
 		
-      // debug text (TODO: (stephen) remove later)
-      //printf("Newfile: %d\n", newfile);
-      //printf("Filepath: %s\n", filepath);       
+      	output_file(dbfd,dbhdr, employees);	
 
-	output_file(dbfd, dbhdr);	
-
-	return 0; 
+	 return 0;
 
 }
